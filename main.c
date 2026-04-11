@@ -124,9 +124,6 @@ int main(int argc, char **argv) {
     int curr = 0;
     system("clear");
 
-    int words_count = 0;
-    int letter_count = 0;
-
     time_t start = time(NULL);
     while (running) {
         render_text(output, w.ws_col, w.ws_row);
@@ -149,16 +146,12 @@ int main(int argc, char **argv) {
             continue;
         }
         if (symb == text[curr]) {
-            letter_count++;
-            if (symb == ' ') {
-                word_count++;
-            }
             set_color(output, 42, curr);
         } else {
             set_color(output, 41, curr);
         }
         if (curr == output->size - 1) {
-            word_count++;
+            curr++;
             break;
         }
         curr++;
@@ -167,8 +160,8 @@ int main(int argc, char **argv) {
     double delta = ((double) (int) end - (double) (int) start);
     system("clear");
     printf("delta: %f\n", delta);
-    printf("wpm: %f\n", ((double) word_count / 5) * (60 / (double) delta));
-    printf("lpm: %f\n", (double) letter_count * (60 / (double) delta));
+    printf("wpm: %f\n", ((double) (curr) / 5) * (60 / (double) delta));
+    printf("lpm: %f\n", (double) (curr) * (60 / (double) delta));
     free(output->array);
     free(output);
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
