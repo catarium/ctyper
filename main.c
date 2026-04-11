@@ -1,4 +1,5 @@
 #include <fcntl.h>
+#include <linux/limits.h>
 #include <stdio.h>
 #include <termios.h>
 #include <stdlib.h>
@@ -45,7 +46,16 @@ char *build_text(int word_count) {
     int lines_count = 0;
     char *text = malloc(sizeof(char));
     text[0] = '\0';
-    FILE *f = fopen("word_list.txt", "r");
+    char exec_path[PATH_MAX];
+    char word_list_path[PATH_MAX];
+    int rc = readlink("/proc/self/exe", exec_path, PATH_MAX);
+    if (rc < 0) {
+        perror("error getting own path");
+    }
+    char *last_slash = strrchr(exec_path, '/');
+    *last_slash = '\0';
+    sprintf(word_list_path, "%s/word_list.txt", exec_path);
+    FILE *f = fopen(word_list_path, "r");
     if (f == NULL) {
         perror("error opening a file");
         _exit(1);
