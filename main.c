@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
             break;
         }
         if (curr == 0) {
-            time_t start = time(NULL);
+            start = time(NULL);
         }
         if (symb == '\0') {
             break;
